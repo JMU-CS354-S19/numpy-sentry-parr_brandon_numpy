@@ -30,6 +30,8 @@ class SentryNode(object):
         """ Set up the Sentry node. """
         rospy.init_node('sentry')
         self.cv_bridge = CvBridge()
+        self.p = None
+        self.average = 1.0
         rospy.Subscriber('/camera/depth_registered/image',
                          Image, self.depth_callback, queue_size=1)
         rospy.spin()
@@ -42,6 +44,27 @@ class SentryNode(object):
 
         # YOUR CODE HERE.
         # HELPER METHODS ARE GOOD.
+        middle = depth.shape[1] / 2
+        c = depth[:,middle]
+        c = c[~np.isnan(c)]
+
+        d = 0
+
+        if (self.p != None):
+        	d = np.sum(np.abs(c - self.p))
+
+        alpha = 0.5
+        self.average = (self.average * alpha) + (d * (1 - alpha))
+
+        temp = d / self.average
+        rospy.loginfo(temp)
+
+
+        self.p = c
+
+
+
+
 
 
 if __name__ == "__main__":
