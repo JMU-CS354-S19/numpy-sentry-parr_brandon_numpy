@@ -3,8 +3,8 @@
 """ 
 SentryBot lets us know if an intruder walks past.
 
-Author: 
-Version:
+Author: Brandon Parr & Nathan Moore
+Version: 2.0
 """
 
 import rospy
